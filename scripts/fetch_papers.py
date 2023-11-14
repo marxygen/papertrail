@@ -48,19 +48,19 @@ def main():
         print(f'No last page number retrieved from the database, starting from 0')
 
     def save_entries(entries):
-        df = pd.DataFrame([e.to_dict() for e in entries])
-        df.to_sql(name='papers', if_exists='replace', index=False)
+        df = pd.DataFrame([e.to_json() for e in entries])
+        df.to_sql(con=con, name='papers', if_exists='replace', index=False)
         save_last_page_number(con, start)
         entries = []
 
     try:
         start = None
         entries = []
-        for entry, start in get_papers_in_category(category_id=args.category, start=last_page_number, batch_size=args.batch_size):
+        for entry, start in get_papers_in_category(category_id=args.category, start=int(last_page_number), batch_size=args.batch_size):
             print(f'- {entry.title}, {len(entry.reference_ids)} references')
             entries.append(entry)
 
-            if len(entries) % 10 == 0:
+            if len(entries) % 1_000 == 0:
                 save_entries(entries)
 
         save_entries(entries)
