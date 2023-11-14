@@ -28,7 +28,7 @@ def load_last_page_number(con: sqlite3.Connection) -> int | None:
 
 def save_last_page_number(con: sqlite3.Connection, last_page: int) -> None:
     cursor = con.cursor()
-    cursor.execute(f'INSERT INTO stats ("stat", "value") VALUES ("last_page", {last_page}) ON CONFLICT("stat") DO UPDATE SET value={last_page}')
+    cursor.execute(f'INSERT INTO stats ("stat", "value") VALUES ("last_page", {last_page})')
     con.commit()
 
 
