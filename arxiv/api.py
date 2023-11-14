@@ -66,13 +66,14 @@ def get_paper_by_id(arxiv_id: Optional[str], load_references: bool = False) -> U
     return parse_entry(content.entries[0], load_references=load_references)
 
 
-def get_papers_in_category(category_id: str, start: int = 0, batch_size: int = 1_000) -> Iterator[PaperInfo]:
+def get_papers_in_category(category_id: str, start: int = 0, batch_size: int = 1_000, load_references: bool = True) -> Iterator[PaperInfo]:
     """
     Makes requests to the Arxiv's API and retrieves PaperInfo entries for papers with the specified category
 
     :param start: The page to start with (0-based)
     :param category_id: Arxiv's category ID (e.g. "cs.LG")
     :param batch_size: How many entries to fetch at a time
+    :param load_references: Whether to load references
     :return:
     """
 
@@ -86,7 +87,7 @@ def get_papers_in_category(category_id: str, start: int = 0, batch_size: int = 1
         if not content.entries:
             return None
 
-        return [parse_entry(entry) for entry in content.entries]
+        return [parse_entry(entry, load_references=load_references) for entry in content.entries]
 
     while True:
         entries = get_entries_from_page(start)
