@@ -8,3 +8,7 @@ class HarvestingException(PapertrailException):
 
 class NoPDFForPaper(HarvestingException):
     pass
+
+
+class InvalidPDFForPaper(HarvestingException):
+    pass
