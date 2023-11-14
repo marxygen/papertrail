@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import List
 
+from pdf.parsing import get_references
+
 
 @dataclass(kw_only=True)
 class Author:
@@ -22,6 +24,10 @@ class PaperInfo:
     authors: List[Author]
 
     pdf_link: str
+    reference_ids: List[str] = None
+
+    def load_references(self) -> None:
+        self.reference_ids = get_references(self.pdf_link)
 
     @property
     def google_scholar_url(self) -> str:
