@@ -40,7 +40,7 @@ class PaperInfo:
 
     def to_json(self) -> dict:
         serialized = asdict(self)
-        serialized['category_codes'] = json.dumps(serialized['category_codes'])
-        serialized['authors'] = json.dumps(serialized['authors'])
-        serialized['reference_ids'] = json.dumps(serialized['reference_ids'])
+        serialized["category_codes"] = json.dumps(serialized["category_codes"])
+        serialized["authors"] = json.dumps(serialized["authors"])
+        serialized["reference_ids"] = json.dumps(serialized["reference_ids"])
         return serialized

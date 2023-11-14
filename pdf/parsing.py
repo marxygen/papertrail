@@ -3,7 +3,10 @@ from typing import Iterable, List
 from pdf.reading import get_contents
 
 
-def get_references(path_or_url: str, reference_formats: Iterable[str] = (r'arXiv:[0-9]+.[0-9]+', r'abs/[0-9]+.[0-9]+')) -> List[str]:
+def get_references(
+    path_or_url: str,
+    reference_formats: Iterable[str] = (r"arXiv:[0-9]+.[0-9]+", r"abs/[0-9]+.[0-9]+"),
+) -> List[str]:
     """
     Get list of Arxiv IDs to referenced papers
 
@@ -26,6 +29,6 @@ def get_references(path_or_url: str, reference_formats: Iterable[str] = (r'arXiv
             # Currently, we're just extracting all numbers and a dot from the string.
             # NOTE: even if the reference is given as "arXiv:1705.03122v2", the valid Arxiv ID is still "1705.03122"
             # TODO: extract all entries, even if they don't have an Arxiv page. Easier said than done, but it'll help later
-            references.append("".join([s for s in match if s.isdigit() or s == '.']))
+            references.append("".join([s for s in match if s.isdigit() or s == "."]))
 
     return references

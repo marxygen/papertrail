@@ -25,7 +25,7 @@ def get_contents(path_or_url: str) -> str | None:
         # The author has provided no source to generate PDF, and no PDF.
         #
         # Then, we just return `None`
-        if 'pdf' not in response.headers['Content-Type']:
+        if "pdf" not in response.headers["Content-Type"]:
             return None
 
         destination = NamedTemporaryFile()
@@ -38,4 +38,4 @@ def get_contents(path_or_url: str) -> str | None:
     try:
         return extract_text(path)
     except PDFException as e:
-        raise InvalidPDFForPaper(f'Unable to read PDF at {path_or_url}: {e}') from e
+        raise InvalidPDFForPaper(f"Unable to read PDF at {path_or_url}: {e}") from e

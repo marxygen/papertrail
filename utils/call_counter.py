@@ -11,17 +11,22 @@ class CallCounter(Singleton):
 
     Tries to make sure that we respect the website's rate limit
     """
+
     calls_per_second: float
     last_call: float
 
     _earliest_allowed_time: float
 
-    def __init__(self, calls_per_second: float = 1, last_call: Optional[datetime | float] = None):
+    def __init__(
+        self, calls_per_second: float = 1, last_call: Optional[datetime | float] = None
+    ):
         self.calls_per_second = calls_per_second
         if not last_call:
             self.last_call = time()
         else:
-            self.last_call = last_call.timestamp() if isinstance(last_call, datetime) else last_call
+            self.last_call = (
+                last_call.timestamp() if isinstance(last_call, datetime) else last_call
+            )
         self._earliest_allowed_time = time()
 
     def record_call(self):

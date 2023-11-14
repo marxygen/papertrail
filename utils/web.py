@@ -9,7 +9,9 @@ def is_valid_url(string: str) -> bool:
     return all(urlparse(string)[:1])
 
 
-def make_request(url: str, respect_rate_limit: bool = True, *args, **kwargs) -> requests.Response:
+def make_request(
+    url: str, respect_rate_limit: bool = True, *args, **kwargs
+) -> requests.Response:
     """
     Make a GET request trying to respect the rate limit (optional)
 

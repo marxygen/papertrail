@@ -11,7 +11,9 @@ from exceptions import NoPDFForPaper
 from utils.web import make_request
 
 
-def parse_entry(entry: atoma.atom.AtomEntry, load_references: bool = False) -> PaperInfo:
+def parse_entry(
+    entry: atoma.atom.AtomEntry, load_references: bool = False
+) -> PaperInfo:
     """
     Parse an entry into a `PaperInfo` object
 
@@ -19,7 +21,7 @@ def parse_entry(entry: atoma.atom.AtomEntry, load_references: bool = False) -> P
     :param load_references: If `True`, this paper will be downloaded and the extracted list of references will be added to the resulting `PaperInfo` object
     :return: A `PaperInfo` object
     """
-    arxiv_id = "".join([s for s in entry.id_.split('/')[-1] if s.isdigit() or s == '.'])
+    arxiv_id = "".join([s for s in entry.id_.split("/")[-1] if s.isdigit() or s == "."])
     pdf_links = [
         l for l in entry.links if l.title == "pdf" and l.type_ == "application/pdf"
     ]
@@ -31,8 +33,8 @@ def parse_entry(entry: atoma.atom.AtomEntry, load_references: bool = False) -> P
     pi = PaperInfo(
         arxiv_id=arxiv_id,
         category_codes=[cat.term for cat in entry.categories],
-        title=entry.title.value.replace('\n', ' '),
-        abstract=entry.summary.value.replace('\n', ' '),
+        title=entry.title.value.replace("\n", " "),
+        abstract=entry.summary.value.replace("\n", " "),
         published=entry.published,
         updated=entry.updated,
         authors=[
@@ -46,7 +48,9 @@ def parse_entry(entry: atoma.atom.AtomEntry, load_references: bool = False) -> P
     return pi
 
 
-def get_paper_by_id(arxiv_id: Optional[str], load_references: bool = False) -> Union[PaperInfo, None]:
+def get_paper_by_id(
+    arxiv_id: Optional[str], load_references: bool = False
+) -> Union[PaperInfo, None]:
     """
     Fetch paper metadata by its Arxiv ID
 
@@ -66,7 +70,12 @@ def get_paper_by_id(arxiv_id: Optional[str], load_references: bool = False) -> U
     return parse_entry(content.entries[0], load_references=load_references)
 
 
-def get_papers_in_category(category_id: str, start: int = 0, batch_size: int = 1_000, load_references: bool = True) -> Iterator[Tuple[PaperInfo, int]]:
+def get_papers_in_category(
+    category_id: str,
+    start: int = 0,
+    batch_size: int = 1_000,
+    load_references: bool = True,
+) -> Iterator[Tuple[PaperInfo, int]]:
     """
     Makes requests to the Arxiv's API and retrieves PaperInfo entries for papers with the specified category
 
@@ -87,7 +96,10 @@ def get_papers_in_category(category_id: str, start: int = 0, batch_size: int = 1
         if not content.entries:
             return None
 
-        return [parse_entry(entry, load_references=load_references) for entry in content.entries]
+        return [
+            parse_entry(entry, load_references=load_references)
+            for entry in content.entries
+        ]
 
     batch_size = batch_size or 1_000
     while True:
