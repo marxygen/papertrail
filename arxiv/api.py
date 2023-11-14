@@ -3,12 +3,12 @@ Contains methods to make requests to the Arxiv's API
 
 See https://info.arxiv.org/help/api/user-manual.html
 """
-from typing import Optional, Union
+from typing import Iterator, Optional, Union
 from arxiv.paper_info import Author, PaperInfo
 import atoma
-import requests
 
 from exceptions import NoPDFForPaper
+from utils.web import make_request
 
 
 def get_paper_by_id(arxiv_id: Optional[str]) -> Union[PaperInfo, None]:
@@ -19,7 +19,7 @@ def get_paper_by_id(arxiv_id: Optional[str]) -> Union[PaperInfo, None]:
     :return: PaperInfo if the paper exists
     """
     url = f"http://export.arxiv.org/api/query?id_list={arxiv_id}"
-    response = requests.get(url)
+    response = make_request(url)
     response.raise_for_status()
 
     content = atoma.parse_atom_bytes(response.content)
