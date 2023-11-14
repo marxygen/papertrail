@@ -1,8 +1,7 @@
 # !pip3 install pdfminer.six
 from pathlib import Path
 from tempfile import NamedTemporaryFile
-from utils.url import is_valid_url
-import requests
+from utils.web import is_valid_url, make_request
 from pdfminer.high_level import extract_text
 
 
@@ -14,7 +13,7 @@ def get_contents(path_or_url: str) -> str:
     :return: File contents as a string
     """
     if is_valid_url(path_or_url):
-        response = requests.get(path_or_url)
+        response = make_request(path_or_url)
         response.raise_for_status()
 
         destination = NamedTemporaryFile()
