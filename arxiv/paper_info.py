@@ -1,3 +1,4 @@
+import json
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from typing import List
@@ -37,5 +38,9 @@ class PaperInfo:
     def arxiv_url(self) -> str:
         return f"https://arxiv.org/abs/{self.arxiv_id}"
 
-    def to_dict(self) -> dict:
-        return asdict(self)
+    def to_json(self) -> dict:
+        serialized = asdict(self)
+        serialized['category_codes'] = json.dumps(serialized['category_codes'])
+        serialized['authors'] = json.dumps(serialized['authors'])
+        serialized['reference_ids'] = json.dumps(serialized['reference_ids'])
+        return serialized
