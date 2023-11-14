@@ -49,6 +49,6 @@ def main():
     except KeyboardInterrupt:
         print(f'Ctrl + C detected, exiting')
 
+
 if __name__ == '__main__':
     main()
-
