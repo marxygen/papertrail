@@ -3,7 +3,7 @@ Contains methods to make requests to the Arxiv's API
 
 See https://info.arxiv.org/help/api/user-manual.html
 """
-from typing import Iterator, List, Optional, Union
+from typing import Iterator, List, Optional, Tuple, Union
 from arxiv.paper_info import Author, PaperInfo
 import atoma
 
@@ -66,7 +66,7 @@ def get_paper_by_id(arxiv_id: Optional[str], load_references: bool = False) -> U
     return parse_entry(content.entries[0], load_references=load_references)
 
 
-def get_papers_in_category(category_id: str, start: int = 0, batch_size: int = 1_000, load_references: bool = True) -> Iterator[PaperInfo]:
+def get_papers_in_category(category_id: str, start: int = 0, batch_size: int = 1_000, load_references: bool = True) -> Iterator[Tuple[PaperInfo, int]]:
     """
     Makes requests to the Arxiv's API and retrieves PaperInfo entries for papers with the specified category
 
@@ -74,7 +74,7 @@ def get_papers_in_category(category_id: str, start: int = 0, batch_size: int = 1
     :param category_id: Arxiv's category ID (e.g. "cs.LG")
     :param batch_size: How many entries to fetch at a time
     :param load_references: Whether to load references
-    :return:
+    :return: An iterator of tuples (`PaperInfo`, `start`)
     """
 
     def get_entries_from_page(start: int = 0) -> List[PaperInfo] | None:
@@ -94,6 +94,6 @@ def get_papers_in_category(category_id: str, start: int = 0, batch_size: int = 1
         entries = get_entries_from_page(start)
         if entries:
             start += batch_size
-            yield from entries
+            yield from [(e, start) for e in entries]
         else:
             break
