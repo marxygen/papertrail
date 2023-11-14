@@ -26,6 +26,12 @@ def load_last_page_number(con: sqlite3.Connection) -> int | None:
     return cursor.fetchone()
 
 
+def save_last_page_number(con: sqlite3.Connection, last_page: int) -> None:
+    cursor = con.cursor()
+    cursor.execute(f'INSERT INTO stats ("stat", "value") VALUES ("last_page", {last_page}) ON CONFLICT("stat") DO UPDATE SET value={last_page}')
+    con.commit()
+
+
 def main():
     args = get_args()
     print("=" * 20, 'Paper Fetcher', "=" * 20)
@@ -41,11 +47,24 @@ def main():
         last_page_number = 0
         print(f'No last page number retrieved from the database, starting from 0')
 
+    def save_entries(entries):
+        df = pd.DataFrame([e.to_dict() for e in entries])
+        df.to_sql(name='papers', if_exists='replace', index=False)
+        save_last_page_number(con, start)
+        entries = []
+
     try:
-        while True:
-            entries = get_papers_in_category(category_id=args.category, start=last_page_number, batch_size=args.batch_size)
-            for entry in entries:
-                print(f'- {entry.title}, {len(entry.reference_ids)} references')
+        start = None
+        entries = []
+        for entry, start in get_papers_in_category(category_id=args.category, start=last_page_number, batch_size=args.batch_size):
+            print(f'- {entry.title}, {len(entry.reference_ids)} references')
+            entries.append(entry)
+
+            if len(entries) % 10 == 0:
+                save_entries(entries)
+
+        save_entries(entries)
+
     except KeyboardInterrupt:
         print(f'Ctrl + C detected, exiting')
 
