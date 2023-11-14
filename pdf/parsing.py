@@ -12,6 +12,10 @@ def get_references(path_or_url: str, reference_formats: Iterable[str] = (r'arXiv
     :return: List of Arxiv IDs to referenced papers
     """
     content = get_contents(path_or_url)
+    # Sometimes, there is no PDF. In this case, `content` will be `None`.
+    if not content:
+        return []
+
     references = []
     for reference_format in reference_formats:
         pattern = re.compile(reference_format)
