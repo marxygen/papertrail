@@ -89,6 +89,7 @@ def get_papers_in_category(category_id: str, start: int = 0, batch_size: int = 1
 
         return [parse_entry(entry, load_references=load_references) for entry in content.entries]
 
+    batch_size = batch_size or 1_000
     while True:
         entries = get_entries_from_page(start)
         if entries:
