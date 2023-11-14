@@ -79,7 +79,7 @@ def get_papers_in_category(category_id: str, start: int = 0, batch_size: int = 1
 
     def get_entries_from_page(start: int = 0) -> List[PaperInfo] | None:
         # We request papers ordering by the submission date in the ascending order
-        url = f"https://export.arxiv.org/api/query?search_query=cat:{category_id}&sortBy=submittedDate&sortOrder=ascending&start={start}"
+        url = f"https://export.arxiv.org/api/query?search_query=cat:{category_id}&sortBy=submittedDate&sortOrder=ascending&start={start}&max_results={batch_size}"
         response = make_request(url)
         response.raise_for_status()
 
