@@ -19,7 +19,7 @@ def parse_entry(entry: atoma.atom.AtomEntry, load_references: bool = False) -> P
     :param load_references: If `True`, this paper will be downloaded and the extracted list of references will be added to the resulting `PaperInfo` object
     :return: A `PaperInfo` object
     """
-    arxiv_id = "".join([s for s in entry.id_.split('/') if s.isdigit() or s == '.'])
+    arxiv_id = "".join([s for s in entry.id_.split('/')[-1] if s.isdigit() or s == '.'])
     pdf_links = [
         l for l in entry.links if l.title == "pdf" and l.type_ == "application/pdf"
     ]
