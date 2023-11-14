@@ -48,3 +48,13 @@ def get_paper_by_id(arxiv_id: Optional[str]) -> Union[PaperInfo, None]:
         ],
         pdf_link=pdf_link,
     )
+
+
+def get_papers_in_category(category_id: str) -> Iterator[PaperInfo]:
+    """
+    Makes requests to the Arxiv's API and retrieves PaperInfo entries for papers with the specified category
+
+    :param category_id: Arxiv's category ID (e.g. "cs.LG")
+    :return:
+    """
+    url = f"https://export.arxiv.org/api/query?search_query=cat:{category_id}"
