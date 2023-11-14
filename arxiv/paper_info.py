@@ -26,9 +26,11 @@ class PaperInfo:
 
     pdf_link: str
     reference_ids: List[str] = None
+    num_references: int = 0
 
     def load_references(self) -> None:
         self.reference_ids = get_references(self.pdf_link)
+        self.num_references = len(self.reference_ids)
 
     @property
     def google_scholar_url(self) -> str:
