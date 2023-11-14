@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import datetime
 from typing import List
 
@@ -36,3 +36,6 @@ class PaperInfo:
     @property
     def arxiv_url(self) -> str:
         return f"https://arxiv.org/abs/{self.arxiv_id}"
+
+    def to_dict(self) -> dict:
+        return asdict(self)
